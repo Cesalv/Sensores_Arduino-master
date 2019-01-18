@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.cesalv.sensores" version="2.2.0">
+    <name>Sensores Arduino</name>
+    <description>
+        Control atmosférico basado en Arduino
+    </description>
+    <author email="cesalv@gmail.com" href="http://cesalv.com">
+        Cesalv
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="Fullscreen" value="true" />
+    <preference name="WebViewBounce" value="true" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="phonegap-version" value="3.1.0" />
+    <icon src="icon.png" />
+</widget>

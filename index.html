@@ -1,0 +1,127 @@
+<!DOCTYPE html> 
+<html>
+
+<!--   
+ ______  ______  ______  ______  __      __   __  
+/\  ___\/\  ___\/\  ___\/\  __ \/\ \    /\ \ / /  
+\ \ \___\ \  __\\ \___  \ \  __ \ \ \___\ \ \'/   
+ \ \_____\ \_____\/\_____\ \_\ \_\ \_____\ \_/   
+  \/_____/\/_____/\/_____/\/_/\/_/\/_____/\//    
+  
+-->
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Control Movil</title>
+		<link rel="stylesheet" href="themes/sensores.css" />
+		<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+
+    	<script src="js/raphael.2.1.0.min.js"></script>
+	    <script src="js/justgage.1.0.1.js"></script>
+
+        <script type="text/javascript">
+            var parametros='';
+            var ws = new WebSocket("ws://cesalv.no-ip.org:8008");
+            ws.onmessage = function (recibido_websock) 
+            { 
+            	parametros = recibido_websock.data;
+          		array_de_datos=parametros.split(",");
+            };
+
+          </script>
+
+          <script>
+		      var g1, g2, g3, g4;
+		      
+		      window.onload = function(){
+		        var g1 = new JustGage({
+		          id: "g1", 
+		          value: 100, 
+		          min: 18,
+		          max: 28,
+		          title: "Temperatura",
+		          label: "ºC"
+		        });
+		        
+		        var g2 = new JustGage({
+		          id: "g2", 
+		          value: 100, 
+		          min: 0,
+		          max: 100,
+		          title: "Humedad relativa",
+		          label: "%"
+		        });
+		        
+		        var g3 = new JustGage({
+		          id: "g3", 
+		          value: 2000, 
+		          min: 950,
+		          max: 1050,
+		          title: "Presión atmosférica",
+		          label: "mBar"
+		        });
+		        
+		        var g4 = new JustGage({
+		          id: "g4", 
+		          value: 500, 
+		          min: -200,
+		          max: 200,
+		          title: "Altitud relativa",
+		          label: "m"
+		        });
+		      
+		        setInterval(function() {
+		          g1.refresh(array_de_datos[0].slice(1,array_de_datos[0].len));
+		          g2.refresh(parseFloat(array_de_datos[4]));          
+		          g3.refresh(array_de_datos[1]);
+		          g4.refresh(array_de_datos[3]);
+		        }, 500);
+		      };
+	    </script>
+
+	</head> 
+	<body> 
+
+		<div data-role="page" data-theme="a">
+			<div data-role="header">
+				<h1>Control Atmosférico</h1>
+			</div>
+			<div data-role="content" data-theme="a">
+				<center> <img src="themes/images/arduino.jpg" height="200"> 
+
+				<br><br>
+					
+				<div data-role="header" data-theme="a">
+					<h4>Sensores</h4>
+				</div>
+
+			    <div id="g1"></div>
+			    <div id="g2"></div>
+			    <div id="g3"></div>
+			    <div id="g4"></div>
+
+				<br>
+
+				<div data-role="collapsible">
+					<h4>Control</h4>
+					<br>
+					<button type="button" data-icon="alert" data-theme="b" onclick="ws.send('r')">Reset Arduino</button>
+					<br>
+				</div>
+
+				<br>
+
+			</div>
+				
+
+				</center>
+			<div data-role="footer">
+				<h4><img src="themes/images/logo.png" height="35"></h4>
+			</div>
+		</div>
+	</body>
+</html>
